@@ -15,7 +15,7 @@
         // echo '<br>';
         // var_dump($member);
 
-        //ログインした情報が一致しなかった場合
+        //ログインした情報が一致しなかった場合へのへの
         if($member == false){
             $error['login'] = 'failed';
         }else{
