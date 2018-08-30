@@ -5,7 +5,6 @@ session_start();
 require('db_connect.php');
 echo'<br>';
 echo'<br>';
-var_dump($_SESSION);
 
 //$_SESSION['id']がない時 == ログインしていない時
 if(!isset($_SESSION['id'])){
@@ -24,14 +23,8 @@ if(!isset($_SESSION['id'])){
         
         //tweetsテーブルにあるレコード全件取得のsql
 
-        $tweets_sql = 'SELECT * FROM`tweets`';
-        $tweets_sql = $dbh->qrepare($sql);
-        $tweets_stmt->execute();
 
         //繰り返し処理
-        while (true) {
-            
-        }
         // while文 == 条件がtrueの時、処理を実行
         
 ?>
@@ -63,12 +56,12 @@ if(!isset($_SESSION['id'])){
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html"><span class="strong-title"><i class="fa fa-twitter-square"></i> Seed SNS</span></a>
+                <a class="navbar-brand" href="index.html"><span class="strong-title"><i class="fa fa-twitter-square"></i> Performing Arts</span></a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="logout.html">ログアウト</a></li>
+                    <li><a href="logout.php">ログアウト</a></li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->

@@ -11,7 +11,9 @@
     echo '</pre>';//preの終了タグ
 
     // クラッキング手法の1つ、XSS(クロスサイトスクリプティング)対策 == サニタイジング
-    $nickname = htmlspecialchars($_SESSION['join']['nick_name']);// サニタイジングしている == htmlを含んだ文字列をブラウザ上で読み込むとそのまま表示されてしまうため、それを防ぐ
+    $nickname = htmlspecialchars($_SESSION['join']['nick_name']);
+    $email = htmlspecialchars($_SESSION['join']['email']);
+    // サニタイジングしている == htmlを含んだ文字列をブラウザ上で読み込むとそのまま表示されてしまうため、それを防ぐ
     $password = htmlspecialchars($_SESSION['join']['password']); 
     $picture_path = $_SESSION['join']['picture_path']; 
     // $_SESSIONのjoinのpicturee_pathを$picture_pathに代入

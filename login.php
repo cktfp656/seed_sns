@@ -42,7 +42,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>SeedSNS</title>
+    <title>Performing Arts</title>
 
     <!-- Bootstrap -->
     <link href="assets/css/bootstrap.css" rel="stylesheet">
