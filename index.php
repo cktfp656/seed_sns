@@ -20,13 +20,22 @@ if(!isset($_SESSION['id'])){
         $stmt->execute($data);
         // ログインしているユーザーの情報を$login_memberに代入
         $login_member = $stmt->fetch(PDO::FETCH_ASSOC);
-        
-        //tweetsテーブルにあるレコード全件取得のsql
 
+        //呟きをDBに保存
 
-        //繰り返し処理
-        // while文 == 条件がtrueの時、処理を実行
-        
+        //呟きボタンが押された時
+        if (!empty($_POST)){
+            $sql ='INSERT INTO `tweets`(`tweet`, `member_id`, `reply_tweet_id`, `created`) VALUES (?,?,?,now())';
+        //呟きを登録するためのInsert文を作成
+
+        //SQL文実行
+            $data = array($_POST['tweet'],$_SESSION['id'],-1);
+            $stmt = $dbh->prepare($sql);
+            $stmt->execute($data);
+
+        //自分の画面へ移動する（データの再送信防止)
+            header("Location: index.php");
+        }
 ?>
 
 <!DOCTYPE html>
