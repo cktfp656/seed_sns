@@ -13,6 +13,9 @@ if(!isset($_SESSION['id'])){
     exit();// それ以降の処理を行わない
 }
 
+//つぶやき全件SELECT(Tweets内容だけ
+    $sql = 'SELECT * FROM `members` WHERE`member_id`DESC';
+// データ(レコード)全件をtweetsテーブルから、createdを元に降順で取得
 // ログインしているユーザの情報を取得するsql文
         $sql = 'SELECT * FROM `members`WHERE`member_id`=?';
         $data = array($_SESSION['id']);
@@ -25,7 +28,7 @@ if(!isset($_SESSION['id'])){
 
         //呟きボタンが押された時
         if (!empty($_POST)){
-            $sql ='INSERT INTO `tweets`(`tweet`, `member_id`, `reply_tweet_id`, `created`) VALUES (?,?,?,now())';
+            $sql ='INSERT INTO `comments`(`comment`, `member_id`, `reply_tweet_id`, `created`) VALUES (?,?,?,now())';
         //呟きを登録するためのInsert文を作成
 
         //SQL文実行
@@ -36,7 +39,21 @@ if(!isset($_SESSION['id'])){
         //自分の画面へ移動する（データの再送信防止)
             header("Location: index.php");
         }
+        $sql = 'SELECT`tweets`.*,`members`.`nick_name`,`members`.`picture_path` FROM`tweets` LEFT JOIN `members` ON `members`.`member_id`=`tweets`.`member_id` ORDER BY `tweets`.`created` DESC';
+        $stmt = $dbh->prepare($sql);
+        $stmt->execute();
+        $tweets = array();
+    while(true){
+        $tweet = $stmt->fetch(PDO::FETCH_ASSOC);
+        if($tweet == false){
+            break;
+        }
+        $tweets[] = $tweet;
+        }
+        // var_dump($tweets);exit;
+
 ?>
+
 
 <!DOCTYPE html>
 <html lang="ja">
@@ -103,62 +120,22 @@ if(!isset($_SESSION['id'])){
             </div>
 
             <div class="col-md-8 content-margin-top">
+                <?php foreach ($tweets as $tweet): ?>
                 <div class="msg">
-                    <img src="http://c85c7a.medialib.glogster.com/taniaarca/media/71/71c8671f98761a43f6f50a282e20f0b82bdb1f8c/blog-images-1349202732-fondo-steve-jobs-ipad.jpg" width="48" height="48">
-                    <p>
-                        つぶやき４<span class="name"> (Seed kun) </span>
-                        [<a href="#">Re</a>]
-                    </p>
-                    <p class="day">
-                        <a href="view.html">
-                            2016-01-28 18:04
-                        </a>
-                        [<a href="#" style="color: #00994C;">編集</a>]
-                        [<a href="#" style="color: #F33;">削除</a>]
-                    </p>
+                        <img src="picture_path/<?php echo $tweet['picture_path']; ?>" width="48" height="48">
+                        <p>
+                            <?php echo $tweet['tweet']; ?><span class="name"> <?php echo$tweet['nick_name']; ?> </span>
+                            [<a href="#">Re</a>]
+                        </p>
+                        <p class="day">
+                            <a href="view.html">
+                                <?php echo $tweet['created']; ?>
+                            </a>
+                            [<a href="#" style="color: #00994C;">編集</a>]
+                            [<a href="#" style="color: #F33;">削除</a>]
+                        </p>
                 </div>
-                <div class="msg">
-                    <img src="http://c85c7a.medialib.glogster.com/taniaarca/media/71/71c8671f98761a43f6f50a282e20f0b82bdb1f8c/blog-images-1349202732-fondo-steve-jobs-ipad.jpg" width="48" height="48">
-                    <p>
-                        つぶやき３<span class="name"> (Seed kun) </span>
-                        [<a href="#">Re</a>]
-                    </p>
-                    <p class="day">
-                        <a href="view.html">
-                            2016-01-28 18:03
-                        </a>
-                        [<a href="#" style="color: #00994C;">編集</a>]
-                        [<a href="#" style="color: #F33;">削除</a>]
-                    </p>
-                </div>
-                <div class="msg">
-                    <img src="http://c85c7a.medialib.glogster.com/taniaarca/media/71/71c8671f98761a43f6f50a282e20f0b82bdb1f8c/blog-images-1349202732-fondo-steve-jobs-ipad.jpg" width="48" height="48">
-                    <p>
-                        つぶやき２<span class="name"> (Seed kun) </span>
-                        [<a href="#">Re</a>]
-                    </p>
-                    <p class="day">
-                        <a href="view.html">
-                            2016-01-28 18:02
-                        </a>
-                        [<a href="#" style="color: #00994C;">編集</a>]
-                        [<a href="#" style="color: #F33;">削除</a>]
-                    </p>
-                </div>
-                <div class="msg">
-                    <img src="http://c85c7a.medialib.glogster.com/taniaarca/media/71/71c8671f98761a43f6f50a282e20f0b82bdb1f8c/blog-images-1349202732-fondo-steve-jobs-ipad.jpg" width="48" height="48">
-                    <p>
-                        つぶやき１<span class="name"> (Seed kun) </span>
-                        [<a href="#">Re</a>]
-                    </p>
-                    <p class="day">
-                        <a href="view.html">
-                            2016-01-28 18:01
-                        </a>
-                        [<a href="#" style="color: #00994C;">編集</a>]
-                        [<a href="#" style="color: #F33;">削除</a>]
-                    </p>
-                </div>
+                <?php endforeach ?>
             </div>
         </div>
     </div>
